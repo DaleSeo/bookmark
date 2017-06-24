@@ -10,6 +10,15 @@ var users = require('./routes/users');
 
 var app = express();
 
+// load the .env file
+console.log('# NODE_ENV:', app.get('env'))
+if (app.get('env') === 'development') {
+  require('dotenv').config()
+}
+
+// database
+require('./core/database.js')
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
