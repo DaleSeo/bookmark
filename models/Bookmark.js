@@ -4,6 +4,9 @@ module.exports = mongoose.model('Bookmark', {
   url: String,
   title: String,
   description: String,
-  date: Date,
-  hit: Number
+  created: Date,
+  updated: Date,
+  visited: Date,
+  visits: Number,
+  tags: Array
 })
