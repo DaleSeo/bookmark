@@ -5,9 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
-
 var app = express();
 
 // load the .env file
@@ -32,8 +29,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'web')))
 
-app.use('/', index);
-app.use('/users', users);
+// routers
+app.use('/', require('./routes/index'))
+app.use('/users', require('./routes/users'))
+app.use('/bookmarks', require('./routes/bookmarks'))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
