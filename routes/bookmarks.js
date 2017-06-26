@@ -2,9 +2,13 @@ const router = require('express').Router()
 const Bookmark = require('../models/Bookmark')
 
 router.get('/', (req, res) => {
+  let query = {}
+  if (req.query.tag) query.tags = req.query.tag
+
   let regex = new RegExp(req.query.keyword || '')
   let limit = +req.query.size || 20
-  Bookmark.find()
+
+  Bookmark.find(query)
     .or([
       {title: regex},
       {url: regex},

@@ -3,24 +3,25 @@
     <div class="content">
       <div class="header">
         <span @click="toggleDetails">{{bookmark.title}}</span>
-        <div class="ui label" @click="visit">{{bookmark.url}}</div>
+        <div class="ui mini icon labeled button" @click="visit">
+          <i class="world icon"/>{{bookmark.url}}
+        </div>
       </div>
       <div class="meta" @click="toggleDetails">
         <i class="green check icon"/> {{bookmark.visits || 0}} visits
-        &nbsp;&nbsp;&nbsp;
-        <i class="calendar icon"/>
-        <span v-if="bookmark.visited">visited on {{bookmark.visited | formatDate}}</span>
-        <span v-if="bookmark.updated">updated on {{bookmark.updated | formatDate}}</span>
-        created on {{bookmark.created | formatDate}}
+        <TagLabels :tags="bookmark.tags"/>
       </div>
       <div class="ui segment description" v-show="showDetails">
         <span class="pre-wrap">{{bookmark.description}}</span>
       </div>
       <div class="extra" v-show="showDetails">
-        <div class="ui right floated mini icon labeled button" @click="modalEdit">
+        <i class="calendar icon"/>
+        <span v-if="bookmark.visited">visited on {{bookmark.visited | formatDate}}</span>
+        <span v-if="bookmark.updated">updated on {{bookmark.updated | formatDate}}</span>
+        created on {{bookmark.created | formatDate}}
+        <div class="ui right floated mini icon labeled button" @click="edit">
           <i class="edit icon"/>Edit
         </div>
-        <Edit :bookmark="bookmark"/>
       </div>
     </div>
   </div>
@@ -28,20 +29,15 @@
 
 <script>
 import Edit from './Edit.vue'
+import TagLabels from './TagLabels.vue'
 
 export default {
-  components: {Edit},
+  components: {Edit, TagLabels},
   props: ['bookmark'],
   data () {
     return {
       showDetails: false,
     }
-  },
-  mounted () {
-    $(`#${this.bookmark._id}.ui.modal`)
-      .modal({
-        onApprove: this.save
-      })
   },
   methods: {
     visit () {
@@ -51,11 +47,8 @@ export default {
     toggleDetails () {
       this.showDetails = !this.showDetails
     },
-    modalEdit () {
-      $(`#${this.bookmark._id}.ui.modal`).modal('show')
-    },
-    save () {
-      this.$http.put(`/bookmarks/${this.bookmark._id}`, this.bookmark)
+    edit () {
+      this.$emit('edit')
     }
   }
 }
