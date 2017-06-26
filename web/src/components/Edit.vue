@@ -4,6 +4,7 @@
       <i class="edit icon"/>{{title}}
     </div>
     <div class="ui form content">
+      <pre>{{bookmark}}</pre>
       <div class="field">
         <label>URL</label>
         <input v-model="bookmark.url"/>
@@ -15,6 +16,9 @@
       <div class="field">
         <label>Description</label>
         <textarea v-model="bookmark.description"/>
+      </div>
+      <div>
+        <Tags v-model="bookmark.tags"/>
       </div>
     </div>
     <div class="actions">
@@ -29,8 +33,15 @@
 </template>
 
 <script>
+import Tags from './Tags.vue'
+
 export default {
-  props: ['bookmark'],
+  components: {Tags},
+  props: {
+    bookmark: {
+      type: Object
+    }
+  },
   computed: {
     title () {
       return this.bookmark._id ? 'Edit' : 'New'

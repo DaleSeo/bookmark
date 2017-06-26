@@ -24,7 +24,12 @@ export default {
     return {
       bookmarks: [],
       keyword: '',
-      newBookmark: {},
+      newBookmark: {
+        url: '',
+        title: '',
+        description: '',
+        tags: []
+      },
       loading: false
     }
   },

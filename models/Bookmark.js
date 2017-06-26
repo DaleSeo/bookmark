@@ -8,5 +8,5 @@ module.exports = mongoose.model('Bookmark', {
   updated: Date,
   visited: Date,
   visits: Number,
-  tags: Array
+  tags: [String]
 })

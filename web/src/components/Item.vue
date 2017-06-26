@@ -1,8 +1,8 @@
 <template>
   <div class="item">
     <div class="content">
-      <div class="header" @click="toggleDetails">
-        <span>{{bookmark.title}}</span>
+      <div class="header">
+        <span @click="toggleDetails">{{bookmark.title}}</span>
         <div class="ui label" @click="visit">{{bookmark.url}}</div>
       </div>
       <div class="meta" @click="toggleDetails">
