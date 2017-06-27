@@ -24,14 +24,6 @@ import TagSelection from './TagSelection.vue'
 
 export default {
   components: {TagSelection},
-  props: ['bookmark'],
-  computed: {
-    id () {
-      return this.bookmark._id || 'new'
-    },
-    title () {
-      return this.bookmark._id ? 'Edit' : 'New'
-    }
-  }
+  props: ['bookmark']
 }
 </script>

@@ -4,8 +4,8 @@
       <i class="edit icon"/>{{title}}
     </div>
     <div class="ui content">
-      <pre>{{bookmark.tags}}</pre>
       <Edit :bookmark="bookmark" v-if="bookmark"/>
+      <div style="height: 500px" v-else></div>
     </div>
     <div class="actions">
       <div class="ui black cancel button">
@@ -30,7 +30,16 @@ export default {
   },
   computed: {
     title () {
-      return this.bookmark._id ? 'Edit' : 'New'
+      return this.bookmark && this.bookmark._id ? 'Edit' : 'New'
+    }
+  },
+  watch: {
+    bookmark (val) {
+      if (val) {
+        $('#Edit.ui.modal').modal('show')
+      } else {
+        $('#Edit.ui.modal').modal('hide')
+      }
     }
   },
   mounted () {
@@ -42,7 +51,6 @@ export default {
   },
   updated () {
     console.log('#updated:', this.bookmark)
-    $('#Edit.ui.modal').modal('show')
   }
 }
 </script>

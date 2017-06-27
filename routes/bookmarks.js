@@ -25,7 +25,7 @@ router.post('/', (req, res) => {
   req.body.visited = now
   req.body.visits = 1
   Bookmark.create(req.body)
-    .then(_ => res.sendStatus(204))
+    .then(_ => res.sendStatus(201))
 })
 
 router.put('/:id', (req, res) => {
@@ -39,6 +39,14 @@ router.patch('/:id/visit', (req, res) => {
     $inc: {visits: 1},
     $set: {visited: new Date()}
   }).then(_ => res.sendStatus(204))
+})
+
+router.get('/tags', (req, res) => {
+  Bookmark.distinct('tags')
+    .then(tags => {
+      tags.sort()
+      res.send(tags)
+    })
 })
 
 module.exports = router

@@ -1,19 +1,11 @@
 <template>
   <div class="ui container" style="margin-top: 5em;">
-    <div class="ui center aligned basic segment"/>
-      <TagFilter v-model="tag"/>
-      <div class="ui right action left icon input" :class="{loading}">
-        <i class="search icon" @click="search"/>
-        <input type="text" placeholder="Search..." v-model="keyword" @input="search">
-        <div class="ui teal icon labeled button" @click="add">
-          <i class="plus icon"/>Add
-        </div>
-      </div>
+    <div class="ui basic segment">
+      <Search :query="query" :loading="loading" @add="add"/>
       <EditModal
-        v-if="bookmark"
         :bookmark="bookmark"
         @approve="save"
-        @hide="hideEdit"
+        @hide="hide"
       />
       <List
         :bookmarks="bookmarks"
@@ -24,23 +16,29 @@
 </template>
 
 <script>
+import Search from './Search.vue'
 import EditModal from './EditModal.vue'
 import List from './List.vue'
-import TagFilter from './TagFilter.vue'
 
 export default {
-  components: {EditModal, List, TagFilter},
+  components: {Search, EditModal, List},
   data () {
     return {
       bookmarks: [],
       bookmark: null,
-      tag: '',
-      keyword: '',
+      query: {
+        tag: '',
+        keyword: ''
+      },
       loading: false
     }
   },
   watch: {
-    tag (val) {
+    'query.keyword': function (val) {
+      if (0 < val.length && val.length < 3) return
+      this.fetch()
+    },
+    'query.tag': function (val) {
       this.fetch()
     }
   },
@@ -62,34 +60,35 @@ export default {
         tags: []
       }
     },
-    search () {
-      if (0 < this.keyword.length && this.keyword.length < 3) return
-      console.log('#search: ', this.keyword)
-      this.fetch()
-    },
     fetch () {
+      console.log('#fetch')
       this.loading = true
-      let url = `/bookmarks?keyword=${this.keyword}&tag=${this.tag}`
+      let url = `/bookmarks?keyword=${this.query.keyword}&tag=${this.query.tag}`
       this.$http.get(url)
         .then(res => res.body)
         .then(bookmarks => this.bookmarks = bookmarks)
         .then(_ => this.loading = false)
     },
     save () {
+      console.log('#save')
+      let http
       if (this.bookmark._id) {
-        this.$http.put(`/bookmarks/${this.bookmark._id}`, this.bookmark)
+        http = this.$http.put(`/bookmarks/${this.bookmark._id}`, this.bookmark)
       } else {
-        this.$http.post(`/bookmarks`, this.bookmark)
+        http = this.$http.post(`/bookmarks`, this.bookmark)
       }
+      http.then(_ => {
+        this.fetch()
+        this.bookmark = null
+      })
+    },
+    hide () {
+      console.log('#hide')
       this.bookmark = null
     },
     add () {
       console.log('#add')
       this.bookmark = this.initBookmark()
-    },
-    hideEdit () {
-      console.log('#hideEdit')
-      this.bookmark = null
     },
     edit (bookmark) {
       console.log('#edit')

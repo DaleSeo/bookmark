@@ -12,10 +12,15 @@
 
 <script>
 export default {
+  props: ['value'],
   data () {
     return {
-      tags: ['English', 'NodeJS', 'VueJS', 'MongoDB', 'CSS']
+      tags: []
     }
+  },
+  created () {
+    this.$http.get('/bookmarks/tags')
+      .then(res => this.tags = res.body)
   },
   mounted () {
     $('#TagFilter.ui.dropdown').dropdown()

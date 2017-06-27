@@ -2,9 +2,11 @@
   <div class="item">
     <div class="content">
       <div class="header">
-        <span @click="toggleDetails">{{bookmark.title}}</span>
-        <div class="ui mini icon labeled button" @click="visit">
-          <i class="world icon"/>{{bookmark.url}}
+        <div class="ui labeled button" @click="visit">
+          <div class="ui icon labeled button">
+            <i class="world icon"/>{{bookmark.url}}
+          </div>
+          <div class="ui basic left pointing label">{{bookmark.title}}</div>
         </div>
       </div>
       <div class="meta" @click="toggleDetails">
@@ -15,13 +17,13 @@
         <span class="pre-wrap">{{bookmark.description}}</span>
       </div>
       <div class="extra" v-show="showDetails">
+        <div class="ui teal mini icon labeled button" @click="edit">
+          <i class="edit icon"/>Edit
+        </div>
         <i class="calendar icon"/>
         <span v-if="bookmark.visited">visited on {{bookmark.visited | formatDate}}</span>
         <span v-if="bookmark.updated">updated on {{bookmark.updated | formatDate}}</span>
         created on {{bookmark.created | formatDate}}
-        <div class="ui right floated mini icon labeled button" @click="edit">
-          <i class="edit icon"/>Edit
-        </div>
       </div>
     </div>
   </div>
