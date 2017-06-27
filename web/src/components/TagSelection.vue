@@ -1,13 +1,10 @@
 <template>
   <div id="TagSelection" class="ui fluid multiple search selection dropdown">
-    <input type="hidden" @change="change">
+    <input type="hidden">
     <i class="dropdown icon"></i>
     <span class="default text">Select Tags</span>
     <div class="menu">
-      <div class="item" :data-value="tag" v-for="tag in tags">
-        <div class="ui empty circular label"></div>
-        {{tag}}
-      </div>
+      <div class="item" :data-value="tag" v-for="tag in tags">{{tag}}</div>
     </div>
   </div>
 </template>
@@ -20,22 +17,42 @@ export default {
       tags: ['English', 'NodeJS', 'VueJS', 'MongoDB', 'CSS']
     }
   },
-  watch: {
-    value (val) {
-      let str = val ? val.join() : ''
-      $('#TagSelection.ui.dropdown').dropdown('set selected', str)
-    }
-  },
   mounted () {
+    console.log('#mounted')
     $('#TagSelection.ui.dropdown').dropdown({
-      allowAdditions: true
+      allowAdditions: true,
+      onChange: (value, text, $choice) => {
+        console.log('#onChange:', value)
+        let arr = value ? value.split(',') : []
+        if (arr != this.value) this.$emit('input', arr)
+      }
     })
+    let str = this.value ? this.value.join() : ''
+    console.log('#str:', str)
+    $('#TagSelection.ui.dropdown').dropdown('set selected', this.value)
   },
-  methods: {
-    change (event) {
-      let arr = event.target.value ? event.target.value.split(',') : []
-      this.$emit('input', arr)
-    }
+  updated () {
+    console.log('#updated')
+    $('#TagSelection.ui.dropdown').dropdown({
+      allowAdditions: true,
+      onChange: (value, text, $choice) => {
+        console.log('#onChange:', value)
+        let arr = value ? value.split(',') : []
+        if (arr != this.value) this.$emit('input', arr)
+      }
+    })
+    let str = this.value ? this.value.join() : ''
+    console.log('#str:', str)
+    $('#TagSelection.ui.dropdown').dropdown('set selected', this.value)
   }
+  // methods: {
+  //   change (event) {
+  //     console.log('#change:', event.target.value)
+  //     let arr = event.target.value ? event.target.value.split(',') : []
+  //     console.log('arr:', arr)
+  //     console.log('this.vlaue:', this.value)
+  //     if (arr !== this.value) this.$emit('input', arr)
+  //   }
+  // }
 }
 </script>

@@ -9,8 +9,8 @@
           <i class="plus icon"/>Add
         </div>
       </div>
-      <Edit
-        :show="showEdit"
+      <EditModal
+        v-if="bookmark"
         :bookmark="bookmark"
         @approve="save"
         @hide="hideEdit"
@@ -24,20 +24,19 @@
 </template>
 
 <script>
-import Edit from './Edit.vue'
+import EditModal from './EditModal.vue'
 import List from './List.vue'
 import TagFilter from './TagFilter.vue'
 
 export default {
-  components: {Edit, List, TagFilter},
+  components: {EditModal, List, TagFilter},
   data () {
     return {
       bookmarks: [],
-      bookmark: this.initBookmark(),
+      bookmark: null,
       tag: '',
       keyword: '',
-      loading: false,
-      showEdit: false
+      loading: false
     }
   },
   watch: {
@@ -82,21 +81,19 @@ export default {
       } else {
         this.$http.post(`/bookmarks`, this.bookmark)
       }
-      this.showEdit = false
+      this.bookmark = null
     },
     add () {
       console.log('#add')
       this.bookmark = this.initBookmark()
-      this.showEdit = true
     },
     hideEdit () {
       console.log('#hideEdit')
-      this.showEdit = false
+      this.bookmark = null
     },
     edit (bookmark) {
       console.log('#edit')
       this.bookmark = bookmark
-      this.showEdit = true
     }
   }
 }
