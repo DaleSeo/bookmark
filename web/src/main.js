@@ -1,3 +1,4 @@
+require('./monitor')
 import Vue from 'vue'
 import VueResource from 'vue-resource'
 import moment from 'moment'
