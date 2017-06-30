@@ -1,9 +1,10 @@
 <template>
-  <div class="ui divided items">
+  <div class="ui items">
     <Item
       :key="bookmark._id"
       :bookmark="bookmark"
       @edit="edit(bookmark)"
+      @reset="$emit('reset')"
       v-for="bookmark in bookmarks"
     />
   </div>

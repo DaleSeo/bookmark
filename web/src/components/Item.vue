@@ -2,16 +2,16 @@
   <div class="item">
     <div class="content">
       <div class="header">
-        <div class="ui labeled button" @click="visit">
-          <div class="ui icon labeled button">
+        <div class="ui labeled button">
+          <div class="ui icon labeled button" @click="visit">
             <i class="world icon"/>{{bookmark.url}}
           </div>
-          <div class="ui basic left pointing label">{{bookmark.title}}</div>
+          <div class="ui basic left pointing label" @click="toggleDetails">{{bookmark.title}}</div>
         </div>
-      </div>
-      <div class="meta" @click="toggleDetails">
-        <i class="green check icon"/> {{bookmark.visits || 0}} visits
         <TagLabels :tags="bookmark.tags"/>
+      </div>
+      <div class="meta" v-show="showDetails">
+        <i class="green check icon"/> {{bookmark.visits || 0}} visits
       </div>
       <div class="ui segment description" v-show="showDetails">
         <span class="pre-wrap">{{bookmark.description}}</span>
@@ -45,6 +45,7 @@ export default {
     visit () {
       window.open(this.bookmark.url, '_blank')
       this.$http.patch(`/bookmarks/${this.bookmark._id}/visit`)
+      this.$emit('reset')
     },
     toggleDetails () {
       this.showDetails = !this.showDetails

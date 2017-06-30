@@ -8,7 +8,7 @@
     <div class="ui teal right floated icon labeled button" @click="$emit('add')">
       <i class="plus icon"/>New
     </div>
-    <div class="ui section divider"></div>
+    <div class="ui divider"></div>
   </div>
 </template>
 

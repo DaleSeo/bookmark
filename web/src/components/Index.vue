@@ -1,5 +1,5 @@
 <template>
-  <div class="ui container" style="margin-top: 5em;">
+  <div class="ui container">
     <div class="ui basic segment">
       <Search :query="query" :loading="loading" @add="add"/>
       <EditModal
@@ -10,6 +10,7 @@
       <List
         :bookmarks="bookmarks"
         @edit="edit"
+        @reset="reset"
       />
     </div>
   </div>
@@ -59,6 +60,14 @@ export default {
         description: '',
         tags: []
       }
+    },
+    reset () {
+      console.log('#reset')
+      this.query = {
+        tag: '',
+        keyword: ''
+      }
+      this.fetch()
     },
     fetch () {
       console.log('#fetch')
