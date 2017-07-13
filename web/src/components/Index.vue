@@ -36,7 +36,7 @@ export default {
   },
   watch: {
     'query.keyword': function (val) {
-      if (0 < val.length && val.length < 3) return
+      if (0 < val.length && val.length < 2) return
       this.fetch()
     },
     'query.tag': function (val) {
@@ -63,6 +63,7 @@ export default {
     },
     reset () {
       console.log('#reset')
+      this.bookmark = null
       this.query = {
         tag: '',
         keyword: ''
