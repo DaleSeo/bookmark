@@ -5,7 +5,7 @@ import moment from 'moment'
 
 import App from './App.vue'
 
-Vue.use(VueResource);
+Vue.use(VueResource)
 Vue.filter('formatDate', function (date) {
     return moment(date).format('YY/MM/DD')
 })
